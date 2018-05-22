@@ -41,7 +41,14 @@ class Utils
 
 		mt_srand();
 
-		$randomize_user_agent = self::$user_agents[mt_rand(0, count(self::$user_agents)-1)];
+		if(!isset($_SERVER['HTTP_USER_AGENT']))
+        {
+            $randomize_user_agent = self::$user_agents[mt_rand(0, count(self::$user_agents)-1)];
+        }
+		else
+        {
+            $randomize_user_agent = $_SERVER['HTTP_USER_AGENT'];
+        }
 
 		$location = parse_url($location);
 		$http = "http://{$location['host']}";
