@@ -40,7 +40,9 @@ export default {
             }
         });
 
-        commit('updateSearchData', results)
+        let {search_results} = results.data;
+
+        commit('updateSearchData', search_results)
     },
 
     initConfig: async ({commit}, site)=> {

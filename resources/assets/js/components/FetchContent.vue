@@ -3,10 +3,10 @@
         <div id="link_content">
             <div v-if="!isSearchLoaded">...Loading</div>
             <div v-if="isSearchLoaded">
-                <div v-for="dates in results">
+                <div v-for="dates in getSearchData">
                     <h1 v-html="dates.date"></h1>
                     <div class="date">
-                        <div v-for="(location, records) in dates.records">
+                        <div v-for="(records, location) in dates.records">
                             <h2 v-html="location"></h2>
                             <ul class="locationItems">
                                 <li v-for="rec in records">
@@ -27,17 +27,11 @@
     import {mapGetters} from 'vuex';
 
     export default {
-        methods:{
+        computed:{
             ...mapGetters([
                 'isSearchLoaded',
                 'getSearchData'
             ])
-        },
-        computed:{
-            results()
-            {
-                return this.getSearchData.data || [];
-            }
         }
     }
 </script>

@@ -75,7 +75,8 @@ class Controller extends BaseController
             // $_POST IS NO LONGER USED, POST-BODY IS AS JSON
             $data = json_decode($request->getContent(), true);
             $scraper = new Scraper($data, $include, $locations, $fields);
-            return response()->json(array_values($scraper->getRecords()));
+            $results = array_values($scraper->getRecords());
+            return response()->json(['search_results'=>$results]);
         }
 
         return response()->json([

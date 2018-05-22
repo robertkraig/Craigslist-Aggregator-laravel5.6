@@ -1726,12 +1726,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])(['isSearchLoaded', 'getSearchData'])),
-    computed: {
-        results: function results() {
-            return this.getSearchData.data || [];
-        }
-    }
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])(['isSearchLoaded', 'getSearchData']))
 });
 
 /***/ }),
@@ -8024,14 +8019,14 @@ var render = function() {
       _vm.isSearchLoaded
         ? _c(
             "div",
-            _vm._l(_vm.results, function(dates) {
+            _vm._l(_vm.getSearchData, function(dates) {
               return _c("div", [
                 _c("h1", { domProps: { innerHTML: _vm._s(dates.date) } }),
                 _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "date" },
-                  _vm._l(dates.records, function(location, records) {
+                  _vm._l(dates.records, function(records, location) {
                     return _c("div", [
                       _c("h2", { domProps: { innerHTML: _vm._s(location) } }),
                       _vm._v(" "),
@@ -23057,7 +23052,7 @@ var _build_area_list = function _build_area_list(area_list) {
         var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref, data) {
             var commit = _ref.commit,
                 state = _ref.state;
-            var form, submit_data, results;
+            var form, submit_data, results, search_results;
             return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -23089,11 +23084,12 @@ var _build_area_list = function _build_area_list(area_list) {
 
                         case 5:
                             results = _context.sent;
+                            search_results = results.data.search_results;
 
 
-                            commit('updateSearchData', results);
+                            commit('updateSearchData', search_results);
 
-                        case 7:
+                        case 8:
                         case "end":
                             return _context.stop();
                     }
