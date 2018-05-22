@@ -4,10 +4,9 @@ export default {
     search_data:[],
     is_area_list_open:false,
     is_region_list_open:false,
+    site:'jobs',
     conf_data:{
-        form:{
-            site:'findjobs'
-        },
+        form:{},
         title:'',
         pagetitle:'',
         pagesearchexample:'',

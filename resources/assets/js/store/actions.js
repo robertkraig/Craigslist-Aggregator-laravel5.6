@@ -34,6 +34,11 @@ export default {
             }), obj => obj.type)
         }, form);
 
+        submit_data = {
+            ...submit_data,
+            site:state.site
+        };
+
         let results = await axios.post('/sites/fetch', submit_data, {
             headers: {
                 'Content-Type': 'application/json',
@@ -45,33 +50,16 @@ export default {
         commit('updateSearchData', search_results)
     },
 
-    initConfig: async ({commit}, site)=> {
+    fetchConfig: async ({commit, state}, site)=> {
+
+        let newSite = site || state.site;
+
         commit('runningConfUpdate');
-
-        let results = await axios.get('/site/init',{
-            params:{
-                site
-            }
-        });
-
-        let {fields, area_list, region_list, title, page_title, search_example} = results.data;
-
-        commit('updateConfData',{
-            title,
-            page_title,
-            search_example,
-            fields,
-            area_list:_build_area_list(area_list),
-            region_list
-        })
-    },
-
-    fetchConfig: async ({commit}, site)=> {
-        commit('runningConfUpdate');
+        commit('changeSite', newSite);
 
         let conf_init = await axios.get('/site/init',{
             params:{
-                site
+                site:newSite
             }
         });
 
@@ -85,7 +73,7 @@ export default {
 
         let conf_data = await axios.get('/sites/conf',{
             params:{
-                site
+                site:newSite
             }
         });
 
@@ -111,7 +99,10 @@ export default {
         });
 
         commit('updateConfData',{
-            form,
+            form:{
+                site:newSite,
+                ...form
+            },
             fields,
             area_list:_build_area_list(area_list),
             region_list

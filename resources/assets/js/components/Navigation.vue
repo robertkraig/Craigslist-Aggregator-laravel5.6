@@ -57,7 +57,6 @@
 </template>
 
 <script>
-    import filter from 'lodash/filter';
     import {mapActions, mapGetters, mapMutations} from 'vuex';
 
     export default {
@@ -74,7 +73,7 @@
         },
         methods:{
             ...mapActions([
-                'submitSearch'
+                'submitSearch',
             ]),
             ...mapMutations([
                 'toggleRegionList',
@@ -108,10 +107,6 @@
                 'getUnselectedAreas',
                 'getTotalAreas'
             ])
-        },
-        mounted()
-        {
-            console.log('navigation mounted');
         }
     }
 </script>

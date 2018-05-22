@@ -1,7 +1,12 @@
 import each from 'lodash/each'
-import filter from 'lodash/filter'
+import Vue from 'vue';
 
 export default {
+    changeSite(state, site)
+    {
+        state.site = site;
+    },
+
     runningSearch(state)
     {
         state.isSearchLoaded = false;
@@ -41,48 +46,35 @@ export default {
     updateRegionSelection(state, region)
     {
         let selected = !region.selected;
+        let index = state.conf_data.region_list.indexOf(region);
         let oldState = state.conf_data.region_list[index];
 
-        let index = state.conf_data.region_list.indexOf(region);
-        this.$set(state.conf_data.region_list, index, Object.assign({}, {
+        state.conf_data.region_list.splice(index, 1, Object.assign({}, {
             ...oldState,
             selected
         }));
 
-        each(state.conf_data.area_list, function(obj)
-        {
+        each(state.conf_data.area_list, (obj, idx) => {
             if(obj.type === region.type)
-                obj.selected = selected;
+            {
+                state.conf_data.area_list.splice(idx, 1, Object.assign({},{
+                    ...obj,
+                    selected
+                }));
+            }
         });
     },
 
     updateAreaSelection(state, area)
     {
         let selected = !area.selected;
+        let index = state.conf_data.area_list.indexOf(area);
         let oldState = state.conf_data.area_list[index];
 
-        let index = state.conf_data.area_list.indexOf(area);
-        this.$set(state.conf_data.area_list, index, Object.assign({}, {
+        Vue.$set(state.conf_data.area_list, index, Object.assign({}, {
             ...oldState,
             selected
         }));
 
-    },
-
-    resetDefaults(state)
-    {
-        let areas = filter(state.conf_data.area_list, {selected:true});
-        if(!areas.length)
-        {
-            each(state.conf_data.region_list, function(obj)
-            {
-                if(obj.type === 'socal') obj.selected = true;
-            });
-
-            each(state.conf_data.area_list, function(obj)
-            {
-                if(obj.type === 'socal') obj.selected = true;
-            });
-        }
     }
 }
