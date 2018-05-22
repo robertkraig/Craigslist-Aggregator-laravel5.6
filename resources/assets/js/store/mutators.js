@@ -71,7 +71,7 @@ export default {
         let index = state.conf_data.area_list.indexOf(area);
         let oldState = state.conf_data.area_list[index];
 
-        Vue.$set(state.conf_data.area_list, index, Object.assign({}, {
+        state.conf_data.area_list.splice(index, Object.assign({}, {
             ...oldState,
             selected
         }));
