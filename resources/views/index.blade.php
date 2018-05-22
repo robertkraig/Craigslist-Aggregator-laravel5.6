@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title>MyKraigslist</title>
     <link rel="stylesheet" href="{{mix('/css/app.css')}}"/>
+    <meta name="referrer" content="no-referrer" />
 </head>
 
 <body>
