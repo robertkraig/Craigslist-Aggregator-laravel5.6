@@ -6,6 +6,11 @@ export default {
         return state.search_data;
     },
 
+    getSections(state)
+    {
+        return state.sections;
+    },
+
     isAreaListOpen(state)
     {
         return state.is_area_list_open;
@@ -16,9 +21,9 @@ export default {
         return state.is_region_list_open;
     },
 
-    isSearchLoaded(state)
+    isSearchLoading(state)
     {
-        return state.is_search_loaded;
+        return state.is_search_loading;
     },
 
     isConfLoaded(state)

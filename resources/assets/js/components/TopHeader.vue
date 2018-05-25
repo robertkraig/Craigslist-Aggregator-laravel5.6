@@ -1,39 +1,29 @@
 <template>
     <nav id="header">
         <ul>
-            <li v-on:click="setSite('stuff')"><router-link :class="setState('stuff')" :to="{ name: 'stuff' }">Stuff</router-link></li>
-            <li v-on:click="setSite('jobs')"><router-link :class="setState('jobs')" :to="{ name: 'jobs' }">Jobs</router-link></li>
-            <li v-on:click="setSite('gigs')"><router-link :class="setState('gigs')" :to="{ name: 'gigs' }">Gigs</router-link></li>
-            <li v-on:click="setSite('places')"><router-link :class="setState('places')" :to="{ name: 'places' }">Places</router-link></li>
-            <li v-on:click="setSite('services')"><router-link :class="setState('services')" :to="{ name: 'services' }">Services</router-link></li>
+            <template v-for="name in getSections">
+                <li :key="name"><router-link :to="{ path: `/s/${name}`, params:{section:name} }">{{capitalize(name)}}</router-link></li>
+            </template>
         </ul>
     </nav>
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
+    import {mapGetters} from 'vuex';
     export default {
         props:['site'],
-        methods:{
-            ...mapActions([
-                'fetchConfig'
+        computed:{
+            ...mapGetters([
+                'getSections'
             ]),
-            setState(state)
-            {
-                return {
-                    active:this.site === state,
-                    inactive:this.site !== state
-                }
-            },
-            setSite(name)
-            {
-                this.fetchConfig(name);
-            }
         },
-        mounted()
-        {
-            console.log(this);
-            this.$store.commit('changeSite', 'jobs');
+        methods:{
+            capitalize(name)
+            {
+                let letters = name.split('');
+                letters[0] = letters[0].toUpperCase();
+                return letters.join('');
+            }
         }
     }
 </script>

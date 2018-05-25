@@ -3,14 +3,21 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
 import FetchContent from './components/FetchContent';
+import Home from './components/Home';
 const router = new VueRouter({
     mode: 'history',
     routes:[
-        {name:'stuff', path: '/stuff', component: FetchContent},
-        {default:'jobs', name:'jobs', path: '/jobs', component: FetchContent},
-        {name:'gigs', path: '/gigs', component: FetchContent},
-        {name:'places', path: '/places', component: FetchContent},
-        {name:'services', path: '/services', component: FetchContent},
+        {
+            name:'home',
+            path: '/',
+            component: Home
+        },
+        {
+            name:'section',
+            path: '/s/:section',
+            component: FetchContent
+        },
+        {path: '/*', redirect: '/'}
     ],
 });
 

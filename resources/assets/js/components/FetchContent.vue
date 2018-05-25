@@ -1,8 +1,8 @@
 <template>
     <div id="content-container">
         <div id="link_content">
-            <div v-if="!isSearchLoaded">...Loading</div>
-            <div v-if="isSearchLoaded">
+            <div v-if="isSearchLoading">...Loading</div>
+            <div v-if="!isSearchLoading">
                 <section v-for="dates in getSearchData">
                     <h1 v-html="dates.date"></h1>
                     <div class="date">
@@ -24,14 +24,46 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         computed:{
             ...mapGetters([
-                'isSearchLoaded',
-                'getSearchData'
+                'isSearchLoading',
+                'getSearchData',
+                'getSections'
             ])
+        },
+        methods:{
+            ...mapActions([
+                'fetchConfig'
+            ]),
+        },
+        beforeRouteEnter (to, from, next)
+        {
+            next(vm => {
+
+                let index = vm.getSections.indexOf(to.params.section);
+                if(index === -1)
+                {
+                    vm.$router.push({path:'/'});
+                    return;
+                }
+
+                vm.fetchConfig(to.params.section);
+            });
+        },
+        beforeRouteUpdate(to, from, next)
+        {
+            let index = this.getSections.indexOf(to.params.section);
+            if(index === -1)
+            {
+                this.$router.push({path:'/'});
+                return;
+            }
+
+            this.fetchConfig(to.params.section);
+            next();
         },
     }
 </script>
