@@ -9,12 +9,12 @@ export default {
 
     runningSearch(state)
     {
-        state.is_search_loading = false;
+        state.is_search_loading = true;
     },
 
     updateSearchData(state, newState)
     {
-        state.is_search_loading = true;
+        state.is_search_loading = false;
         state.search_data = Object.assign([], newState);
     },
 
