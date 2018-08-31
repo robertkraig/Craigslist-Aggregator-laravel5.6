@@ -13,38 +13,38 @@ class Scraper {
 
 	private $_record_list = array();
 
-	public function __construct($args, $include, $locations, $fields)
+	public function __construct($request_conf, $include, $locations, $fields)
 	{
-		$this->initialize($args, $include, $locations, $fields);
+		$this->initialize($request_conf, $include, $locations, $fields);
 	}
 
 	/**
 	 * Will assemble search queries onto existing stored CL urls
-	 * @param array $args list of post arguments
+	 * @param array $request_conf list of post arguments
 	 * @param array $fields list of accepted fields
-	 * @param array $array list of urls to search CL with
+	 * @param array $location_url_param_list list of urls to search CL with
 	 * @return array
 	 */
-	private static function _append_and_build_search_query(array $args, array $fields, array $array)
+	private static function _append_and_build_search_query(array $request_conf, array $fields, array $location_url_param_list)
 	{
 		$tmp_arr = array();
 		foreach($fields as $field)
 		{
-			if(isset($args[$field['argName']]))
+			if(isset($request_conf[$field['argName']]))
 			{
-				$tmp_arr[$field['argName']] = $args[$field['argName']];
+				$tmp_arr[$field['argName']] = $request_conf[$field['argName']];
 			}
 		}
 
 		$tmp_arr['format'] = 'rss';
 
-		$args = http_build_query($tmp_arr);
-		foreach($array as $key=>$val)
+		$request_conf_str = http_build_query($tmp_arr);
+		foreach($location_url_param_list as $key=> $val)
 		{
-			$array[$key]['url'].="{$args}";
+			$location_url_param_list[$key]['url'].="{$request_conf_str}";
 		}
 
-		return $array;
+		return $location_url_param_list;
 	}
 
 	/**
@@ -77,16 +77,17 @@ class Scraper {
 
 	/**
 	 * Pulls all the records and assembles them into a data structure suitable for a website
+     * @param array $request_conf
 	 * @param array $include craigslist sections
 	 * @param array $locations list of avaliable sites to query against
 	 * @param array $fields fields to initialize
 	 */
-	private function initialize(array $args, array $include, array $locations, array $fields)
+	private function initialize(array $request_conf, array $include, array $locations, array $fields)
 	{
 		$search_items = array();
 		$include = str_replace(array(".","+"), array('\\.',"(.+)"), implode('|', $include));
 
-		$locations = self::_append_and_build_search_query($args, $fields, $locations);
+		$locations = self::_append_and_build_search_query($request_conf, $fields, $locations);
 		foreach($locations as $place)
 		{
 			if(preg_match("/({$include})/", $place['url']))

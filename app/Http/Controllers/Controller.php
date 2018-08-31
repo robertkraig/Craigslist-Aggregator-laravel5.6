@@ -73,8 +73,8 @@ class Controller extends BaseController
         {
             Utils::$cache_url = base_path('/storage/framework/cache/');
             // $_POST IS NO LONGER USED, POST-BODY IS AS JSON
-            $data = json_decode($request->getContent(), true);
-            $scraper = new Scraper($data, $include, $locations, $fields);
+            $request_data = json_decode($request->getContent(), true);
+            $scraper = new Scraper($request_data, $include, $locations, $fields);
             $results = array_values($scraper->getRecords());
             return response()->json(['search_results'=>$results]);
         }
